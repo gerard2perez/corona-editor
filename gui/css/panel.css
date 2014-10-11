@@ -1,0 +1,103 @@
+.corona-editor-panel *{
+        box-sizing: border-box;
+    }
+    .corona-editor-panel{
+        background-color: #f8f8f8;
+        display: flex;
+        flex-direction: column;
+    }
+    .corona-editor-panel>header{
+        flex: 0 0 auto;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+    }
+    .corona-editor-panel>header>*{
+        display: inline-flex;
+        font-size: 16px;
+        padding: 5px 10px 5px 20px;
+    }
+    .corona-editor-panel>header>*:nth-child(1){
+        background-color: #38A2F9;
+        border-left: 5px #2791E8 solid;
+        color: white;
+    }
+    .corona-editor-panel>header>*:nth-child(2){
+        color: #AAA;
+    }
+    .corona-editor-panel>header>*:nth-child(3){
+        background-color: #2791E8;
+        border: none;
+        width: auto;
+        padding: 5px 25px 5px 10px;
+    }
+    .corona-editor-panel [role=tabipanel]{
+        display: flex;
+        flex: 1 1 auto;
+        overflow: scroll;
+    }
+    .corona-editor-panel [role=tabipanel]>menu{
+        list-style: none;
+        flex: 0 0 108px;
+        padding: 0px;
+        margin: 0px;
+        z-index: 100;
+        border-right: 2px #38A2F9 solid;
+        margin-right: 5px;
+    }
+    .corona-editor-panel [role=tabipanel]>menu>li{
+        display: block;
+        width: 108px;
+        transition: all 0.5s;
+        overflow: hidden;
+        padding:2px 8px 2px 4px;
+        font-size: 12px;
+        border-left: 4px #2791E8 dashed;
+        color: #AAA;
+    }
+    .corona-editor-panel [role=tabipanel]>menu>li:hover{
+        width: 120px;
+        background-image: -webkit-gradient(
+            linear, right top, left top,
+            color-stop(0.5, #2791E8),
+            color-stop(1, #6BC5FC)
+        );
+        color: white;
+    }
+    .corona-editor-panel [role=tabipanel]>menu>li.active{
+        border-left-style: solid;
+        background-color: #2791E8;
+        color:white;
+        padding:8px 8px 8px 4px;
+    }
+    .corona-editor-panel [role=tabipanel]>article{
+        flex: 0 1 0px;
+        overflow: scroll;
+        align-items: flex-start;
+        justify-content: flex-start;
+        vertical-align: top;
+        visibility: collapse;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s;
+    }
+    .corona-editor-panel [role=tabipanel]>article.active{
+        flex: 1 1 auto;
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0px);
+    }
+    .corona-editor-panel [role=tabipanel]>article.active>div{
+        white-space: pre-wrap;
+    }
+    .vanish{
+        width: 100%;
+        height: 20px;
+        background-image: -webkit-gradient(
+            linear, left top, left bottom,
+            color-stop(0.1, #f8f8f8),
+            color-stop(1, rgba(255,255,255,0.1))
+        );
+        display: block;
+        position: absolute;
+    }
