@@ -1,144 +1,88 @@
-/*jshint maxparams:false*/
-/*global exports */
+/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4,
+maxerr: 50, node: true */
+/*global */
 
 (function () {
     "use strict";
-    console.log("****************************");
+
+    var os = require("os");
     var ChildProcess  = require("child_process"),
         constant = require("constants"),
         domainName    = constant.Domain,
         domainManager = null,
         processMap    = {};
 
-    /*function fixEOL(str) {
+
+    function fixEOL(str) {
         if (str[str.length - 1] === "\n") {
             str = str.slice(0, -1);
         }
         return str;
     }
 
-    // handler with ChildProcess.spawn
 
-    function join(arr) {
-        var result, index = 0, length;
-        length = arr.reduce(function (l, b) {
-            return l + b.length;
-        }, 0);
-        result = new Buffer(length);
-        arr.forEach(function (b) {
-            b.copy(result, index);
-            index += b.length;
-        });
-        return fixEOL(result.toString("utf8"));
-    }
+    function cmdSpawn(cmd) {
 
-    function spawn(command, args, opts, callback) {
-        console.log("SPAND COMMANS");
-        // https://github.com/creationix/node-git
-        var child = ChildProcess.spawn(command, args);
-        processMap[opts.cliId] = child;
+        var child = ChildProcess.spawn(cmd, []);
+        processMap = child.pid;
 
         var exitCode, stdout = [], stderr = [];
         child.stdout.addListener("data", function (text) {
+            console.log("stdout"+text.toString("utf8"));
             stdout[stdout.length] = text;
         });
         child.stderr.addListener("data", function (text) {
-            if (opts.watchProgress) {
-                domainManager.emitEvent(domainName, "progress", [
-                    opts.cliId,
+            domainManager.emitEvent("simple", "progress", [
+                    processMap,
                     (new Date()).getTime(),
                     fixEOL(text.toString("utf8"))
                 ]);
-            }
-            stderr[stderr.length] = text;
         });
         child.addListener("exit", function (code) {
             exitCode = code;
         });
         child.addListener("close", function () {
-            delete processMap[opts.cliId];
+            /*delete processMap[opts.cliId];
             callback(exitCode > 0 ? join(stderr) : undefined,
-                     exitCode > 0 ? undefined : join(stdout));
+                     exitCode > 0 ? undefined : join(stdout));*/
         });
         child.stdin.end();
     }
 
-    function kill(cliId, callback) {
-        console.log("handle kills");
-        /*var process = processMap[cliId];
-        if (!process) {
-            return callback("Couldn't find process to kill with ID:" + cliId);
-        }
-        delete processMap[cliId];
-        ProcessUtils.getChildrenOfPid(process.pid, function (err, children) {
-            // kill also parent process
-            children.push(process.pid);
-            children.forEach(function (pid) {
-                ProcessUtils.killSingleProcess(pid);
-            });
-        });* /
-    }
-    */
     /**
-     * Initializes the domain.
-     * @param {DomainManager} DomainManager for the server
+     * Initializes the test domain with several test commands.
+     * @param {DomainManager} domainManager The DomainManager for the server
      */
-    exports.init = function (domainManager) {
-        console.log("--------------------------------");
-        console.log(domainManager);
-        if (!domainManager.hasDomain(domainName)) {
-            console.log(domainName);
-            domainManager.registerDomain(domainName, {
-                major: 0,
-                minor: 1
-            });
-        } else {
-            throw new Error(domainName +
-                            " domain already registered. Close all Brackets instances and start again. " +
-                            "This should only happen when updating the extension.");
+    function init(DM) {
+        domainManager = DM;
+        if (!domainManager.hasDomain("simple")) {
+            domainManager.registerDomain("simple", {major: 0, minor: 1});
         }
-
         domainManager.registerCommand(
-            domainName,
-            "coronaeditordemo",
-            function(){console.log("test");return true;},
-            true,
-            "Does nothing",
-            [],
-            []
+            "simple",       // domain name
+            "spawn",    // command name
+            cmdSpawn,   // command handler function
+            false,          // this command is synchronous in Node
+            "Returns the total or free memory on the user's system in bytes",
+            [{name: "total", // parameters
+                type: "string",
+                description: "True to return total memory, false to return free memory"}],
+            [{name: "memory", // return values
+                type: "number",
+                description: "amount of memory in bytes"}]
         );
-        /*
-        domainManager.registerCommand(
-            domainName,
-            "spawn", // command name
-            spawn, // command handler function
-            true, // this command is async
-            "Launches a new process with the given command.",
+        domainManager.registerEvent(
+            "simple",
+            "progress",
             [
-                //{ name: "directory", type: "string" },
-                { name: "command", type: "string" },
-                { name: "args", type: "array" },
-                { name: "opts", type: "object" },
-            ],
-            [
-                { name: "stdout", type: "string" }
+                { name: "commandId", type: "number" },
+                { name: "time", type: "number" },
+                { name: "message", type: "string" }
             ]
         );
+    }
 
-        domainManager.registerCommand(
-            domainName,
-            "kill", // command name
-            kill, // command handler function
-            true, // this command is async
-            "Launches a new process with the given command.",
-            [
-                { name: "commandId", type: "number" }
-            ],
-            [
-                { name: "stdout", type: "string" }
-            ]
-        );
-        */
-    };
+
+    exports.init = init;
 
 }());

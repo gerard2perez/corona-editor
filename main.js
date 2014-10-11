@@ -5,5 +5,22 @@ maxerr: 50, browser: true */
 /** Simple extension that adds a "File > Hello World" menu item */
 define(function (require, exports, module) {
     "use strict";
+    var ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        NodeDomain     = brackets.getModule("utils/NodeDomain"),
+        CommandManager = brackets.getModule("command/CommandManager"),
+        Menus          = brackets.getModule("command/Menus");
+
+    var constant        = require("api/constants");
+    var simpleDomain = new NodeDomain( "simple" , ExtensionUtils.getModulePath(module, "api/CoronaEditorDomain"));
+    $(simpleDomain).on("progress",function(event,pid,time,message){
+        console.log(pid,"[brakets-"+constant.namespace+"]",message);
+    });
+
+    CommandManager.register("Lauch Project",constant.cmdLaunch,function(){
+        simpleDomain.exec("spawn", "/Applications/CoronaSDK/Corona\ Simulator.app/Contents/MacOS/Corona\ Simulator");
+    });
+    var launch = Menus.addMenu(constant.project, constant.cmdLaunch+".menu"  );
+    launch.addMenuItem(constant.cmdLaunch);
+
 
 });

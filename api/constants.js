@@ -1,8 +1,8 @@
+/*global, define*/
 define(function (require, exports, module) {
-    module.exports.NAMESPACE = 'coronaeditor';
-    module.exports.Domain = 'brackets-coronaeditor';
-    module.exports.COMMANDLAUNCH = module.exports.NAMESPACE+'.command.launch';
-    module.exports.COMMANDNEWPROJECT = module.exports.NAMESPACE+'.command.new';
-    //module.exports.COMMANDLAUNCH = module.exports.NAMESPACE+'command.launch';
-    //module.exports.COMMANDLAUNCH = module.exports.NAMESPACE+'command.launch';
+    module.exports.project        = 'Corona Editor';
+    module.exports.namespace        = 'corona-editor';
+    module.exports.menu         = module.exports.namespace + "menu";
+    module.exports.cmdLaunch    = module.exports.namespace+'.cmd.launch';
+    module.exports.cmdNew       = module.exports.namespace+'.cmd.new';
 });
