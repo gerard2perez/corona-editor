@@ -17,22 +17,50 @@ define(function(require,exports){
         $("#corona-editor-panel article.active>div:last-child").append('\n'+message);
     }
     function log(message){
-        message = message.replace(/^.*Corona Simulator.*\](.*)/gm,"$1");
+        var scroll = false;
+        var pos = $("#corona-editor-panel article").height() + $("#corona-editor-panel article").scrollTop();
+        if(
+            pos == $("#corona-editor-panel article")[0].scrollHeight
+        ){
+            scroll = true;
+        }
+        message = message.replace(/^.*Corona Simulator\[[0-9]*\:[0-9]*\](.*)/gm,"$1");
         for( var i in formatqueu.pre){
             message = formatqueu.pre[i](message);
         }
         //will always print to the last page's div
-         $("#corona-editor-panel article.active>div:last-child").append('\n'+message);
+         $("#corona-editor-panel article.active>div:last-child").append(message);
+        message = $("#corona-editor-panel article.active>div:last-child").text();
+        for( var i in formatqueu.after){
+            var res = formatqueu.after[i](message);
+            if( res !==null && res!==undefined){
+                if( res[1] ){
+                    $("#corona-editor-panel article.active>div:last-child").html(message.replace(res[1],""));
+                }
+                $("#corona-editor-panel article.active").append( res[0]  ,  '<div/>');
+            }
+        }
+        if(scroll){
+            $("#corona-editor-panel article").scrollTop(
+                $("#corona-editor-panel article")[0].scrollHeight
+            );
+        }
     }
     function Clean(){
-        $("#corona-editor-panel article").html($("<div>"));
+        $("#corona-editor-panel article").html($("<div>\n</div>"));
     }
     formatqueu.pre.push(function(message){
         if( message.search("C o r o n a   L a b s   I n c") > -1 ){
             Clean();
         }
-        if( message.search("Version:") >1 )$("#corona-editor-panel #version").html(message.replace(/.*Version\: (.*)$/gm," $1"));
-        if( message.search("Build:") >1 )$("#corona-editor-panel #build").html(message.replace(/.*Build\: (.*)$/gm," $1"));
+        if( message.indexOf("Version:") >-1 ){
+            $("#corona-editor-panel #version").html(message.replace(/.*Version\: (.*)$/gm," $1"));
+        }else if( message.indexOf("Build:") >-1 ){
+            console.debug(message);
+            $("#corona-editor-panel #build").html(message.replace(/.*Build\: (.*)$/gm," $1"));
+        }else{
+            //console.debug(message);
+        }
 
         return message;
     });
@@ -69,6 +97,9 @@ define(function(require,exports){
     }
     exports.hide = function(){
         Panel.hide();
+    };
+    exports.show = function(){
+        Panel.show();
     };
     exports.toggle = function(){
         if(Panel === null)return;

@@ -9,7 +9,15 @@ define(function(require,exports,module){
 
     var simpleDomain = new NodeDomain( "simple" , ExtensionUtils.getModulePath(module, "CoronaEditorDomain"));
         $(simpleDomain).on("progress",function(event,pid,time,message){
-            CoronaPanel.log(message);
+            if(message.search('\n')>-1)
+            {
+                message = message.split('\n');
+            }else{
+                message = [message];
+            }
+            for(var i in message){
+                CoronaPanel.log(message[i]+'\n');
+            }
         });
     var IsCoronable = false;
 
@@ -32,14 +40,15 @@ define(function(require,exports,module){
         //IsCoronable
         if(IsCoronable){
             CoronaPanel.Clean();
+            CoronaPanel.show();
             /*simpleDomain.exec("kill").done(function(){
                 CoronaPanel.log("DONE");
             }).fail(function(){
                 CoronaPanel.log("FAIL");
             });*/
                 simpleDomain.exec("spawn", "/Applications/CoronaSDK/Corona Simulator.app/Contents/MacOS/Corona Simulator",
-                              ["/Users/gerard2p/Google Drive/EntityCorona"]
-                              //[PM.getInitialProjectPath()+"main.lua","&"]
+                              //["/Users/gerard2p/Google Drive/EntityCorona"]
+                              [PM.getInitialProjectPath()+"main.lua"]
                              );
             //}).fail(function(){CoronaPanel.log("FAIL");});
         }

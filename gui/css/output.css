@@ -1,0 +1,74 @@
+.corona-editor-panel .separator{
+    height: 6px;
+    background-color: black;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 3px;
+}
+.corona-editor-panel .separator.plus{background-color: red;}
+.corona-editor-panel .separator.asterisc{background-color: blue;}
+.corona-editor-panel .separator.doubledot{background-color: yellow;}
+.corona-editor-panel .separator.middledot{background-color: green;}
+.corona-editor-panel .separator.line{background-color: magenta;}
+
+.corona-editor-panel [role=object]{
+    background-color: rgb(52,54,58);
+    color: white;
+    display: block;
+    border: 2px solid rgb(22,24,28);
+}
+.corona-editor-panel [role=subobject]{
+    background-color: rgba(32,34,38,0.2);
+    color: white;
+    margin-top: 10px;
+    display: block;
+    flex: 2 2 25%;
+    margin: 5px;
+    border: 1px dotted rgb(29,83,115);
+}
+.corona-editor-panel [role=property]{
+    display: block;
+}
+
+
+.corona-editor-panel [role=object]>header,.corona-editor-panel [role=subobject]>header{
+    background-color: white;
+    display: inline;
+    cursor: help;
+}
+.corona-editor-panel [role=object]>header>[role=name]{
+    background-color: rgb(22,24,28);
+    border-radius: 0px 4px 4px 0px;
+}
+.corona-editor-panel [role=object]>header>[role=opts]{
+    color: black;
+    padding: 15px;
+}
+.corona-editor-panel [role=subobject]>header>[role=name]{
+    background-color: rgb(32,34,38);
+    padding: 0px 10px;
+    border-radius: 0px 3px 3px 0px;
+}
+.corona-editor-panel [role=subobject]>header>[role=opts]{
+    color: black;
+    padding: 0px 10px;
+}
+
+.corona-editor-panel [role=object]>article,.corona-editor-panel [role=subobject]>article{
+    /*display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;*/
+}
+
+.corona-editor-panel [role=property]{
+    background-color: rgb(29,83,115);
+    display: inline-block;
+    max-height: 20px;
+    margin: 5px;
+}
+.corona-editor-panel [role=property]>[role=name]{
+    display: inline-block;
+    padding: 1px 2px 1px 10px;
+    background-color: rgb(68,163,211);
+}
+.corona-editor-panel [role=property]>[role=value]{padding: 2px;}

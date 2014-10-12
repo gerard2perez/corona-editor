@@ -8,6 +8,7 @@ define(function (require, exports, module) {
 
     require("api/brackets");
     require("api/events");
+    require("api/output");
 
     var CoronaPanel = require("api/panel");
 
@@ -19,6 +20,7 @@ define(function (require, exports, module) {
 
 
     ExtensionUtils.loadStyleSheet(module, "gui/css/panel.css");
+    ExtensionUtils.loadStyleSheet(module, "gui/css/output.css");
 
     CommandManager.register("Lauch Project",constant.cmdLaunch,function(){
         EventEmitter.emit("LauchProject");
