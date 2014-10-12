@@ -38,8 +38,20 @@ define(function(require,exports){
     });
     function init(){
         AppInit.appReady (function(){
+            var $icon = $("<a id='corona-toolbar-icon' href='#'></a>").appendTo($("#main-toolbar .buttons"));
             var panelHtml = $( Mustache.render(panel) );
             Panel = WM.createBottomPanel('corona-editor.log.main',panelHtml,200);
+
+            $icon.on('click',function(){
+                if( $(this).hasClass('on') == false ){return;}
+                if( Panel.isVisible() ){
+                    Panel.hide();
+                }else{
+                    Panel.show();
+                }
+
+            });
+
             $panel = Panel.$panel;
             $panel.find("[role=tabipanel]").append($(tabitem));
             $panel.on('click','li',function(){
@@ -53,11 +65,19 @@ define(function(require,exports){
             $panel.on('click',"#launch",function(){
                 EventEmitter.emit("LauchProject");
             });
-
-            Panel.show();
         });
     }
-
+    exports.hide = function(){
+        Panel.hide();
+    };
+    exports.toggle = function(){
+        if(Panel === null)return;
+        if( Panel.isVisible() ){
+            Panel.hide();
+        }else{
+            Panel.show();
+        }
+    };
     exports.$panel = $panel;
     exports.Panel = Panel;
     exports.init = init;

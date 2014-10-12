@@ -15,9 +15,12 @@ define(function(require,exports,module){
 
     EventEmitter.on("EnableCoronaEditor",function(){
         IsCoronable = true;
+        $("#corona-toolbar-icon").addClass('on');
     });
     EventEmitter.on("DisableCoronaEditor",function(){
         IsCoronable = false;
+        $("#corona-toolbar-icon").removeClass('on');
+        //CoronaPanel.hide();
     });
     EventEmitter.on("KillCP",function(){
         simpleDomain.exec("kill");
@@ -27,8 +30,7 @@ define(function(require,exports,module){
 
         CoronaPanel.log(PM.getInitialProjectPath());
         //IsCoronable
-        if(true){
-
+        if(IsCoronable){
             CoronaPanel.Clean();
             /*simpleDomain.exec("kill").done(function(){
                 CoronaPanel.log("DONE");

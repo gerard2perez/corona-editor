@@ -1,3 +1,12 @@
+#corona-toolbar-icon{
+    background-image: url(../img/corona-flat-gray.png);
+    background-position: center center;
+    background-size: 100% 100%;
+    background-blend-mode:difference;
+}
+#corona-toolbar-icon.on{
+    background-image: url(../img/corona-flat.png);
+}
 .corona-editor-panel *{
         box-sizing: border-box;
     }
