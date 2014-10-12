@@ -16,7 +16,7 @@ define(function(require,exports,module){
                 message = [message];
             }
             for(var i in message){
-                CoronaPanel.log('\n'+message[i]);
+                CoronaPanel.log(message[i]+'\n');
             }
         });
     var IsCoronable = false;
@@ -38,7 +38,7 @@ define(function(require,exports,module){
 
         CoronaPanel.log(PM.getInitialProjectPath());
         //IsCoronable
-        if(true){
+        if(IsCoronable){
             CoronaPanel.Clean();
             CoronaPanel.show();
             /*simpleDomain.exec("kill").done(function(){
@@ -47,8 +47,8 @@ define(function(require,exports,module){
                 CoronaPanel.log("FAIL");
             });*/
                 simpleDomain.exec("spawn", "/Applications/CoronaSDK/Corona Simulator.app/Contents/MacOS/Corona Simulator",
-                              ["/Users/gerard2p/Google Drive/EntityCorona"]
-                              //[PM.getInitialProjectPath()+"main.lua","&"]
+                              //["/Users/gerard2p/Google Drive/EntityCorona"]
+                              [PM.getInitialProjectPath()+"main.lua"]
                              );
             //}).fail(function(){CoronaPanel.log("FAIL");});
         }

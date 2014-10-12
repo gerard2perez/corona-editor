@@ -1,7 +1,8 @@
 define(function(require,exports,module){
-    var register = require("api/panel");
+    var register = require("api/panel").registerFormat;
 
-    register.registerFormat(function(msg){
+    //Separator
+    register(function(msg){
         var _class = "";
         if(msg.indexOf("...")>-1){_class="dot";}
         else if(msg.indexOf("---")>-1){_class="line";}
@@ -15,8 +16,10 @@ define(function(require,exports,module){
         }
         return msg;
     },'pre');
-    register.registerFormat(function(output){
-        var object = (output+'\n').match(/ (.*){(\n[\w\W\r\n\t]*) }\n/);
+
+    //LORM
+    register(function(output){
+        var object = output.match(/ (.*){(\n[\w\W\r\n\t]*) }\n/);
         if( object){
             var definition = object[1];
             var content = object[2];
@@ -30,6 +33,9 @@ define(function(require,exports,module){
                 $(header).append($(name).html( data[1]), $(opts).html(data[2])),
                 $(body)
             );
+            object.children('header').click(function(){
+                $(this).parent().children('article').toggle();
+            });
             var current = object.find('article');
             for( var i in content){
                 if(content[i].indexOf("{")>-1){
@@ -39,6 +45,9 @@ define(function(require,exports,module){
                         $(name).html( data[1]),
                         $(opts).html(data[2])
                     ),$(body));
+                    subobject.children('header').click(function(){
+                        $(this).parent().children('article').toggle();
+                    });
                     current.append( subobject );
                     current = subobject.find('article');
                 }else if(content[i].indexOf("}")>-1){
@@ -55,6 +64,7 @@ define(function(require,exports,module){
                     }
                 }
             }
+            object.find('article').hide();
          return [object,/ (.*){(\n[\w\W\r\n\t]*) }\n/];
         }
 
