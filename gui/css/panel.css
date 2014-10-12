@@ -1,6 +1,24 @@
 .corona-editor-panel *{
         box-sizing: border-box;
     }
+.corona-editor-panel #version,.corona-editor-panel #build{
+    margin-left: 10px;
+}
+    .corona-editor-panel #specialtools{
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+    }
+    .corona-editor-panel #specialtools *{
+        border:none;
+        width: 32px;
+        background-position: center center;
+        background-size: 28px 28px;
+        background-repeat: no-repeat;
+        background-color: transparent;
+    }
+    .corona-editor-panel #specialtools #launch{background-image: url(../img/run.png);}
+.corona-editor-panel #specialtools #hide{background-image: url(../img/hide.png);}
     .corona-editor-panel{
         background-color: #f8f8f8;
         display: flex;
@@ -23,13 +41,10 @@
         color: white;
     }
     .corona-editor-panel>header>*:nth-child(2){
+        flex: 1 0 auto;
         color: #AAA;
-    }
-    .corona-editor-panel>header>*:nth-child(3){
-        background-color: #2791E8;
-        border: none;
-        width: auto;
-        padding: 5px 25px 5px 10px;
+        text-align: center;
+        align-self: center;
     }
     .corona-editor-panel [role=tabipanel]{
         display: flex;

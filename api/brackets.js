@@ -1,4 +1,28 @@
-define(function(require,exports,modele){
+/*global, define*/
+define(function (require, exports, module) {
+    var PM      =   brackets.getModule("project/ProjectManager"),
+        fUtils  =   brackets.getModule("file/FileUtils"),
+        EventEmitter = require("api/EventEmitter");
+
+    $(PM).on("projectOpen",function(){
+        PM.getAllFiles().then(function(list){
+            for( var i in list){
+                if( fUtils.getBaseName (list[i]. fullPath) == "mail.lua"){
+                    EventEmitter.emit("EnableCoronaEditor");
+                }
+            }
+        });
+    });
+
+    $(PM).on("beforeProjectClose",function(){
+        EventEmitter.emit("KillCP");
+    });
+    $(PM).on("beforeAppClose",function(){
+        EventEmitter.emit("KillCP");
+    });
+
+
+
     /*
     ProjectManager
 Description
