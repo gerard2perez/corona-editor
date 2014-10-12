@@ -10,7 +10,7 @@ maxerr: 50, node: true */
         constant = require("constants"),
         domainName    = constant.Domain,
         domainManager = null,
-        processMap    = {};
+        processMap    = null;
 
 
     function fixEOL(str) {
@@ -21,11 +21,13 @@ maxerr: 50, node: true */
     }
 
 
-    function cmdSpawn(cmd) {
-
-        var child = ChildProcess.spawn(cmd, []);
-        processMap = child.pid;
-
+    function cmdSpawn(cmd,args) {
+        if( processMap !== null){
+            processMap.kill();
+            processMap = null;
+        }
+        var child = ChildProcess.spawn(cmd, args);
+        processMap = child;
         var exitCode, stdout = [], stderr = [];
         child.stdout.addListener("data", function (text) {
             console.log("stdout"+text.toString("utf8"));
@@ -33,7 +35,7 @@ maxerr: 50, node: true */
         });
         child.stderr.addListener("data", function (text) {
             domainManager.emitEvent("simple", "progress", [
-                    processMap,
+                    child.pid,
                     (new Date()).getTime(),
                     fixEOL(text.toString("utf8"))
                 ]);
@@ -49,6 +51,37 @@ maxerr: 50, node: true */
         child.stdin.end();
     }
 
+    function cmdKill(){
+        if( processMap !== null){
+            processMap.kill();
+            processMap = null;
+        }
+        return true;
+        /*
+        if( processMap != null){
+            console.log("-----");
+            console.log(processMap);
+            var child = ChildProcess.exec("kill "+processMap);
+            child.stdout.addListener("data", function (text) {
+                console.log("stdout"+text.toString("utf8"));
+            });
+            child.stdout.addListener("data", function (text) {
+                console.log("stderr"+text.toString("utf8"));
+            });
+            child.addListener("exit", function (code) {
+                console.log("exit",code);
+                processMap = null;
+            });
+            child.addListener("close", function () {
+                processMap = null;
+                console.log("close");
+                child.kill();
+            });
+            child.stdin.end();
+        }
+        return true;
+        */
+    }
     /**
      * Initializes the test domain with several test commands.
      * @param {DomainManager} domainManager The DomainManager for the server
@@ -60,9 +93,18 @@ maxerr: 50, node: true */
         }
         domainManager.registerCommand(
             "simple",       // domain name
+            "kill",    // command name
+            cmdKill,   // command handler function
+            true,          // this command is synchronous in Node
+            "Returns the total or free memory on the user's system in bytes",
+            [],
+            []
+        );
+        domainManager.registerCommand(
+            "simple",       // domain name
             "spawn",    // command name
             cmdSpawn,   // command handler function
-            false,          // this command is synchronous in Node
+            true,          // this command is synchronous in Node
             "Returns the total or free memory on the user's system in bytes",
             [{name: "total", // parameters
                 type: "string",
@@ -84,5 +126,6 @@ maxerr: 50, node: true */
 
 
     exports.init = init;
+    exports.pid = function(){return processMap;};
 
 }());
