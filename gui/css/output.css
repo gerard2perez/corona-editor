@@ -1,0 +1,35 @@
+.corona-editor-panel .separator{
+    height: 6px;
+    background-color: black;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 3px;
+}
+.corona-editor-panel .separator.plus{background-color: red;}
+.corona-editor-panel .separator.asterisc{background-color: blue;}
+.corona-editor-panel .separator.doubledot{background-color: yellow;}
+.corona-editor-panel .separator.middledot{background-color: green;}
+.corona-editor-panel .separator.line{background-color: magenta;}
+/*
+else if(msg.indexOf("---")>-1){_class="line";}
+        else if(msg.indexOf("+++")>-1){_class="plus";}
+        else if(msg.indexOf("***")>-1){_class="asterisc";}
+        else if(msg.indexOf(":::")>-1){_class="doubledot";}
+        else if(msg.indexOf("···")>-1){_class="middledot";}
+*/
+
+
+.corona-editor-panel [role=object]{
+    background-color: black;
+    color: white;
+    display: block;
+}
+.corona-editor-panel [role=subobject]{
+    background-color: red;
+    color: blue;
+    margin-top: 10px;
+    display: block;
+}
+.corona-editor-panel [role=property]{
+    display: block;
+}

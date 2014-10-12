@@ -17,12 +17,23 @@ define(function(require,exports){
         $("#corona-editor-panel article.active>div:last-child").append('\n'+message);
     }
     function log(message){
-        message = message.replace(/^.*Corona Simulator.*\](.*)/gm,"$1");
+        message = message.replace(/^.*Corona Simulator\[[0-9]*\:[0-9]*\](.*)/gm,"$1");
         for( var i in formatqueu.pre){
             message = formatqueu.pre[i](message);
         }
         //will always print to the last page's div
-         $("#corona-editor-panel article.active>div:last-child").append('\n'+message);
+         $("#corona-editor-panel article.active>div:last-child").append(message);
+        message = $("#corona-editor-panel article.active>div:last-child").text();
+        for( var i in formatqueu.after){
+            message = formatqueu.after[i](message);
+            console.debug(message);
+            if( message !==null && message!==undefined){
+                if( message[1] ){
+                    //$("#corona-editor-panel article.active>div:last-child").html(message.replace(message[1],""));
+                }
+                $("#corona-editor-panel article.active").append( message[0]  ,  '<div/>');
+            }
+        }
     }
     function Clean(){
         $("#corona-editor-panel article").html($("<div>"));
@@ -31,8 +42,8 @@ define(function(require,exports){
         if( message.search("C o r o n a   L a b s   I n c") > -1 ){
             Clean();
         }
-        if( message.search("Version:") >1 )$("#corona-editor-panel #version").html(message.replace(/.*Version\: (.*)$/gm," $1"));
-        if( message.search("Build:") >1 )$("#corona-editor-panel #build").html(message.replace(/.*Build\: (.*)$/gm," $1"));
+        if( message.search("Version:") >-1 )$("#corona-editor-panel #version").html(message.replace(/.*Version\: (.*)$/gm," $1"));
+        if( message.search("Build:") >-1 )$("#corona-editor-panel #build").html(message.replace(/.*Build\: (.*)$/gm," $1"));
 
         return message;
     });
@@ -69,6 +80,9 @@ define(function(require,exports){
     }
     exports.hide = function(){
         Panel.hide();
+    };
+    exports.show = function(){
+        Panel.show();
     };
     exports.toggle = function(){
         if(Panel === null)return;

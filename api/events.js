@@ -9,7 +9,15 @@ define(function(require,exports,module){
 
     var simpleDomain = new NodeDomain( "simple" , ExtensionUtils.getModulePath(module, "CoronaEditorDomain"));
         $(simpleDomain).on("progress",function(event,pid,time,message){
-            CoronaPanel.log(message);
+            if(message.search('\n')>-1)
+            {
+                message = message.split('\n');
+            }else{
+                message = [message];
+            }
+            for(var i in message){
+                CoronaPanel.log('\n'+message[i]);
+            }
         });
     var IsCoronable = false;
 
@@ -30,8 +38,9 @@ define(function(require,exports,module){
 
         CoronaPanel.log(PM.getInitialProjectPath());
         //IsCoronable
-        if(IsCoronable){
+        if(true){
             CoronaPanel.Clean();
+            CoronaPanel.show();
             /*simpleDomain.exec("kill").done(function(){
                 CoronaPanel.log("DONE");
             }).fail(function(){

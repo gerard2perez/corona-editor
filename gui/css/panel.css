@@ -67,7 +67,6 @@
         margin: 0px;
         z-index: 100;
         border-right: 2px #38A2F9 solid;
-        margin-right: 5px;
     }
     .corona-editor-panel [role=tabipanel]>menu>li{
         display: block;
@@ -104,6 +103,8 @@
         opacity: 0;
         transform: translateX(-10px);
         transition: all 0.3s;
+        padding-left: 5px;
+        padding-right: 5px;
     }
     .corona-editor-panel [role=tabipanel]>article.active{
         flex: 1 1 auto;
